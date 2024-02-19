@@ -74,6 +74,69 @@ app.get('/jobs/unpaid', getProfile, async (req, res) => {
 
 // POST /jobs/:job_id/pay - Pay for a job, a client can only pay if his balance >= the amount to pay
 // The amount should be moved from the client's balance to the contractor balance.
-app.post('/jobs/:job_id/pay', async (req, res) => res.send('Here'));
+app.post('/jobs/:jobId/pay', getProfile, async (req, res) => {
+  const { id: profileId } = req.profile;
+  const { Profile, Job, Contract } = req.app.get('models');
+  const { jobId } = req.params;
+
+  const clientProfilePromise = Profile.findOne({
+    where: { id: profileId },
+  });
+
+  const jobPromise = Job.findOne({
+    include: [{ model: Contract }],
+    where: { id: +jobId },
+  });
+
+  const [clientProfile, job] = await Promise.all([clientProfilePromise, jobPromise]);
+
+  if (!job) { return res.status(404).end(); }
+
+  const contractorProfile = await Profile.findOne({
+    where: { id: job.Contract.ClientId },
+  });
+
+  // Check if job is already paid
+  if (+job.paid === 1) {
+    return res.status(400).json({
+      error: 'This job has already been paid',
+    });
+  }
+
+  // Check for positive balance
+  if (+clientProfile.balance < +job.price) {
+    return res.status(400).json(
+      {
+        error: 'Not enough funds',
+      },
+
+    );
+  }
+
+  const t = await sequelize.transaction();
+
+  try {
+    // Subtract money from client
+    clientProfile.balance -= +job.price;
+    // Add money to contractor
+    contractorProfile.balance += +job.price;
+    // Update paid status
+    job.paid = 1;
+
+    await Promise.all([
+      clientProfile.save({ transaction: t }),
+      contractorProfile.save({ transaction: t }),
+      job.save({ transaction: t }),
+    ]);
+
+    await t.commit();
+  } catch (error) {
+    await t.rollback();
+  }
+
+  return res.json({
+    message: 'The payment has been made successfully',
+  });
+});
 
 module.exports = app;
