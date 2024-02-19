@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Op } = require('sequelize');
+const helmet = require('helmet');
 const { sequelize } = require('./model');
 const { getProfile } = require('./middleware/getProfile');
 
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json(), helmet());
 app.set('sequelize', sequelize);
 app.set('models', sequelize.models);
 
@@ -69,7 +70,9 @@ app.get('/jobs/unpaid', getProfile, async (req, res) => {
 
   });
 
-  return res.json(jobs);
+  return res.json({
+    jobs,
+  });
 });
 
 // POST /jobs/:job_id/pay - Pay for a job, a client can only pay if his balance >= the amount to pay
@@ -136,6 +139,55 @@ app.post('/jobs/:jobId/pay', getProfile, async (req, res) => {
 
   return res.json({
     message: 'The payment has been made successfully',
+  });
+});
+
+// POST /balances/deposit/:userId - Deposits money into the balance of a client,
+// a client can't deposit more than 25% his total of jobs to pay. (at the deposit moment)
+app.post('/balances/deposit/:userId', getProfile, async (req, res) => {
+  console.log(1);
+  const { Profile, Job, Contract } = req.app.get('models');
+  const userId = +req.params.userId;
+  const { amount } = req.body;
+
+  const client = await Profile.findOne({
+    where: {
+      id: userId,
+      type: 'client',
+    },
+  });
+
+  const clientContracts = await Contract.findAll({
+    where: { ClientId: userId },
+  });
+
+  const clientContractsIds = clientContracts.reduce((pv, cv) => {
+    pv.push(cv.id);
+    return pv;
+  }, []);
+
+  const totalOfJobsToPay = await Job.sum('price', {
+    where: {
+      paid: {
+        [Op.not]: true,
+      },
+      ContractId: {
+        [Op.in]: clientContractsIds,
+      },
+    },
+  });
+
+  if (amount > totalOfJobsToPay * 0.25) {
+    return res.status(400).json({
+      error: `Can't deposit more than 25% of your total of jobs to pay [${totalOfJobsToPay * 0.25}]`,
+    });
+  }
+
+  client.balance += amount;
+  await client.save();
+
+  return res.json({
+    message: 'The balance has been updated',
   });
 });
 
