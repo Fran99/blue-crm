@@ -19,38 +19,47 @@ app.get('/contracts/:id', getProfile, async (req, res) => {
   const { Contract } = req.app.get('models');
   const { id } = req.params;
   const { id: profileId } = req.profile;
+
   const contract = await Contract.findOne({
     where: {
       id,
-      [Op.or]: [
-        { ContractorId: profileId },
-        { ClientId: profileId },
-      ],
+      [Op.and]: {
+        [req.profile.idType]: profileId,
+      },
     },
   });
   if (!contract) return res.status(404).end();
   return res.json(contract);
 });
 
-// GET /contracts - Returns a list of contracts belonging to a user (client or contractor),
-// the list should only contain non terminated contracts.
+/**
+ * GET /contracts
+ * @returns a list of contracts belonging to a user (client or contractor)
+ * the list should only contain non terminated contracts.
+ */
 app.get('/contracts', getProfile, async (req, res) => {
   const { Contract } = req.app.get('models');
   const { id: profileId } = req.profile;
   const contracts = await Contract.findAll({
     where:
     {
-      [Op.or]: [
-        { ContractorId: profileId },
-        { ClientId: profileId },
-      ],
+      status: {
+        [Op.not]: 'terminated',
+      },
+      [Op.and]: {
+        [req.profile.idType]: profileId,
+      },
     },
   });
   return res.json(contracts);
 });
 
-// GET /jobs/unpaid - Get all unpaid jobs for a user (either a client or contractor),
-// for active contracts only.
+/**
+ * GET /jobs/unpaid
+ * @returns all unpaid jobs for a user (either a client or contractor),
+ * for active contracts only.
+ * Contracts are considered active only when status is in_progress
+ */
 app.get('/jobs/unpaid', getProfile, async (req, res) => {
   const { Job, Contract } = req.app.get('models');
   const { id: profileId } = req.profile;
@@ -62,18 +71,15 @@ app.get('/jobs/unpaid', getProfile, async (req, res) => {
       model: Contract,
       where: {
         status: 'in_progress',
-        [Op.or]: [
-          { ContractorId: profileId },
-          { ClientId: profileId },
-        ],
+        [Op.and]: {
+          [req.profile.idType]: profileId,
+        },
       },
     }],
 
   });
 
-  return res.json({
-    jobs,
-  });
+  return res.json(jobs);
 });
 
 // POST /jobs/:job_id/pay - Pay for a job, a client can only pay if his balance >= the amount to pay
@@ -197,7 +203,7 @@ app.post('/balances/deposit/:userId', getProfile, async (req, res) => {
 // GET /admin/best-profession?start=<date>&end=<date> - Returns the profession that earned the most money
 // (sum of jobs paid) for any contactor that worked in the query time range.
 app.get('/admin/best-profession', async (req, res) => {
-  console.log(1);
+
 });
 
 app.get('/admin/profiles', async (req, res) => {
