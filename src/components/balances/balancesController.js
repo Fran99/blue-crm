@@ -7,12 +7,20 @@ module.exports = {
     const userId = +req.params.userId;
     const { amount } = req.body;
 
+    if (!amount) {
+      return res.status(400).json({
+        error: 'Please include a valid amount',
+      });
+    }
+
     const client = await Profile.findOne({
       where: {
         id: userId,
         type: 'client',
       },
     });
+
+    if (!client) { return res.status(404).end(); }
 
     const clientContracts = await Contract.findAll({
       where: { ClientId: userId },
