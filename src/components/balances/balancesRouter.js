@@ -9,7 +9,7 @@ const router = express.Router();
  * Deposits money into the balance of a client.
  * A client can't deposit more than 25% his total of jobs to pay. (at the deposit moment)
  */
-router.get('/deposit/:userId', getProfile, deposit);
+router.post('/deposit/:userId', deposit);
 
 module.exports = {
   balancesRouter: router,

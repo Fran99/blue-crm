@@ -41,8 +41,15 @@ module.exports = {
     });
 
     const jobPromise = Job.findOne({
-      include: [{ model: Contract }],
-      where: { id: +jobId },
+      include: [{
+        model: Contract,
+        where: {
+          ClientId: profileId,
+        },
+      }],
+      where: {
+        id: +jobId,
+      },
     });
 
     const [clientProfile, job] = await Promise.all([clientProfilePromise, jobPromise]);
@@ -50,7 +57,7 @@ module.exports = {
     if (!job) { return res.status(404).end(); }
 
     const contractorProfile = await Profile.findOne({
-      where: { id: job.Contract.ClientId },
+      where: { id: job.Contract.ContractorId },
     });
 
     // Check if job is already paid
@@ -62,12 +69,7 @@ module.exports = {
 
     // Check for positive balance
     if (+clientProfile.balance < +job.price) {
-      return res.status(400).json(
-        {
-          error: 'Not enough funds',
-        },
-
-      );
+      return res.status(400).json({ error: 'Not enough funds' });
     }
 
     const t = await sequelize.transaction();

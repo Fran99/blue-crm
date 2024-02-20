@@ -10,7 +10,7 @@ const router = express.Router();
  * for active contracts only.
  * Contracts are considered active only when status is in_progress
  */
-router.get('/deposit/:userId', getProfile, unpaid);
+router.get('/unpaid', getProfile, unpaid);
 
 /**
  * POST /jobs/:job_id/pay
