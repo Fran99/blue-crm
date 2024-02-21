@@ -12,9 +12,9 @@
     "sqlite3": "^5.0.0"
   },
   "scripts": {
-    "start": "concurrently \"node ./src/server.js\" \"npm run start:frontend\"",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:frontend": "cd hometask-front && npm run dev",
-    "start:backend:dev": "nodemon ./src/server.js",
+    "start:backend": "nodemon ./src/server.js",
     "seed": "node ./scripts/runSeed.js",
     "lint": "eslint",
     "lint:fix": "eslint --fix ./src",
