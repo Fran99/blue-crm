@@ -124,4 +124,21 @@ describe('Integration Tests', () => {
       expect(currentBalance).to.equal(previousBalance + 50);
     });
   });
+
+  describe('GET /admin/best-profession', () => {
+    it('Returns an object with the correct profession', async () => {
+      const response = await request(app)
+        .get('/admin/best-profession');
+      expect(response.body.profession).to.equal('Programmer');
+    });
+  });
+
+  describe('GET /admin/best-clients', () => {
+    it('Returns an object with the correct clients', async () => {
+      const response = await request(app)
+        .get('/admin/best-clients');
+      expect(response.body[0].fullname).to.equal('Ash Kethcum');
+      expect(response.body[1].fullname).to.equal('Harry Potter');
+    });
+  });
 });
