@@ -17,7 +17,7 @@ a {
   text-decoration: none!important;
 }
 
-.container-sm {
+.container-sm:not(#footer > div) {
   padding-bottom: 100px;
 }
 </style>

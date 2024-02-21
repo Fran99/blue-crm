@@ -10,7 +10,7 @@ const year = (new Date()).getFullYear();
   </footer>
 
   <nav id="footer" class="navbar fixed-bottom">
-    <div class="container-fluid">
+    <div class="container-sm">
       <p>&copy; {{ year }} HomeTaskFront</p>
     </div>
   </nav>
