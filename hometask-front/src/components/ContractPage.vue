@@ -29,6 +29,44 @@ getContract()
       <div v-else>
         <h1 class="display-3">Contract #{{ contractId }}</h1>
         <hr>
+        <h2 class="display-6">Contract details:</h2>
+        <ol class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Id</div>
+              {{ contract.id }}
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Terms</div>
+              {{ contract.terms }}
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Status</div>
+              <span class="text-capitalize">{{ contract.status.replaceAll('_', ' ') }}</span>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Client</div>
+              <router-link :to="{ name: 'ProfilePage', params: { profileId: contract.ClientId } }">
+                Client #{{ contract.ClientId }}
+              </router-link>
+
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Contractor</div>
+              <router-link :to="{name: 'ProfilePage', params: {profileId: contract.ContractorId}}">
+                Contractor #{{ contract.ContractorId }}
+              </router-link>
+            </div>
+          </li>
+        </ol>
       </div>
 
   </div>
