@@ -2,6 +2,12 @@ const { Op } = require('sequelize');
 
 module.exports = {
 
+  /**
+   * Make a deposit to a clients balance.
+   * @param req
+   * @param res
+   * @return {Promise<*>}
+   */
   async deposit(req, res) {
     const { Profile, Job, Contract } = req.app.get('models');
     const userId = +req.params.userId;

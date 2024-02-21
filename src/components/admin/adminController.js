@@ -1,6 +1,13 @@
 const { sequelize } = require('../../model');
 
 module.exports = {
+
+  /**
+   * Returns what would be the best profession based on the amount generated
+   * @param req
+   * @param res
+   * @return {Promise<*>}
+   */
   async bestProfession(req, res) {
     const start = req.query.start || 0;
     const end = req.query.end || (new Date()).toISOString();
@@ -21,6 +28,12 @@ module.exports = {
     return res.json(result[0][0]);
   },
 
+  /**
+   * Returns which would be the best customers based on the amount spent
+   * @param req
+   * @param res
+   * @return {Promise<*>}
+   */
   async bestClients(req, res) {
     const start = req.query.start || 0;
     const end = req.query.end || (new Date()).toISOString();

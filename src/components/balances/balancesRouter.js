@@ -1,5 +1,4 @@
 const express = require('express');
-const { getProfile } = require('../../middleware/getProfile');
 const { deposit } = require('./balancesController');
 
 const router = express.Router();
