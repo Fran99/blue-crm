@@ -97,6 +97,7 @@ getUnpaidJobs();
       <hr>
       <h4 class="text-capitalize">{{ profileData.type }}</h4>
       <h6>Balance: US${{ profileData.balance }}</h6>
+      <div v-if="isClient">
       <h6>
         <a @click="isMakingDeposit = !isMakingDeposit"
            class="btn btn-link">{{ isMakingDeposit ? 'Cancel' : 'Make a deposit' }}</a>
@@ -112,6 +113,7 @@ getUnpaidJobs();
             <button class="btn btn-secondary btn-sm" @click.prevent="makeDeposit">Send</button>
           </div>
         </div>
+      </div>
       </div>
 
       <hr>
