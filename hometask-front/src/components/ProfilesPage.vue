@@ -33,7 +33,7 @@ fetchProfiles();
       <tr v-for="profile in profilesData" :key="profile.id">
         <th scope="row">{{ profile.id }}</th>
         <td>
-          <router-link :to="{name: 'Profile', params: {profileId: profile.id}}">
+          <router-link :to="{name: 'ProfilePage', params: {profileId: profile.id}}">
             {{ profile.firstName }} {{ profile.lastName }}
           </router-link>
         </td>

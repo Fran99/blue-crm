@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Body from "@/components/Home.vue";
-import Profile from "@/components/Profile.vue";
-import Profiles from "@/components/Profiles.vue";
-import Contract from "@/components/Contract.vue";
+import HomePage from "@/components/HomePage.vue";
+import ProfilePage from "@/components/ProfilePage.vue";
+import ProfilesPage from "@/components/ProfilesPage.vue";
+import ContractPage from "@/components/ContractPage.vue";
 
 
 const router = createRouter({
@@ -10,23 +10,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Body
+      name: 'HomePage',
+      component: HomePage
     },
     {
       path: '/profiles',
-      name: 'Profiles',
-      component: Profiles
+      name: 'ProfilesPage',
+      component: ProfilesPage
     },
     {
       path: '/profiles/:profileId',
-      name: 'Profile',
-      component: Profile
+      name: 'ProfilePage',
+      component: ProfilePage
     },
     {
       path: '/contracts/:contractId/:profileId',
       name: 'Contract',
-      component: Contract
+      component: ContractPage
     },
   ]
 })
