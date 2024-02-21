@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: '/profiles',
       name: 'ProfilesPage',
-      component: ProfilesPage
+      component: ProfilesPage,
     },
     {
       path: '/profiles/:profileId',

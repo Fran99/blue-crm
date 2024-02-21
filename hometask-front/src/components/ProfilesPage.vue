@@ -17,6 +17,7 @@ fetchProfiles();
   <div class="container-sm">
     <h1 class="display-3">Profiles</h1>
     <hr>
+
     <p v-if="!profilesData">Loading...</p>
 
     <table v-else class="table">
