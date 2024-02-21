@@ -4,7 +4,7 @@ const { sequelize } = require('../../model');
 module.exports = {
 
   /**
-   *
+   * Returns a list of all the unpaid jobs belonging to a client or contractor.
    * @param req
    * @param res
    * @return {Promise<*>}
@@ -31,6 +31,12 @@ module.exports = {
     return res.json(jobs);
   },
 
+  /**
+   * Makes a payment to a contractor
+   * @param req
+   * @param res
+   * @return {Promise<*>}
+   */
   async pay(req, res) {
     const { id: profileId } = req.profile;
     const { Profile, Job, Contract } = req.app.get('models');
