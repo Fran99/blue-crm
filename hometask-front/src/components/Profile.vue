@@ -13,6 +13,7 @@ interface Profile {
 
 const profileData: Ref<Profile | null> = ref(null);
 const contractsData = ref(null);
+const unpaidJobs = ref(null);
 const isMakingDeposit = ref(false);
 const depositFeedback = ref('');
 const depositAmount = defineModel();
@@ -33,6 +34,16 @@ async function getContracts() {
   contractsData.value = await res.json();
 }
 
+async function getUnpaidJobs() {
+  unpaidJobs.value = null;
+  const response = await fetch(`${API_URL}/jobs/unpaid`, {
+    headers: {
+      profile_id: profileId
+    }
+  });
+  unpaidJobs.value = await response.json();
+}
+
 async function makeDeposit() {
 
   const res = await fetch(`${API_URL}/balances/deposit/${profileData.value.id}`, {
@@ -49,11 +60,11 @@ async function makeDeposit() {
     isMakingDeposit.value = false;
     depositAmount.value = 0;
   }
-
 }
 
 getProfile();
 getContracts();
+getUnpaidJobs();
 </script>
 
 <template>
@@ -63,6 +74,7 @@ getContracts();
 
     <div v-else>
       <h1 class="display-3">{{ profileData.firstName }} {{ profileData.lastName }}</h1>
+      <hr>
       <h4 class="text-capitalize">{{ profileData.type }}</h4>
       <h6>Balance: US${{ profileData.balance }}</h6>
       <h6>
@@ -87,31 +99,73 @@ getContracts();
 
     <p v-if="!contractsData">Loading...</p>
 
-    <table v-else class="table">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Terms</th>
-        <th scope="col">Status</th>
-        <th scope="col">Jobs</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="contract in contractsData" :key="contract.id">
-        <th scope="row">{{ contract.id }}</th>
-        <td>
-          {{ contract.terms }}
-        </td>
-        <td class="text-capitalize">{{ contract.status.replaceAll('_', ' ') }}</td>
-        <td>
+    <div v-else>
+      <h4>
+        <span class="text-capitalize">
+          {{ profileData.type }}
+        </span> contracts
+      </h4>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Terms</th>
+          <th scope="col">Status</th>
+          <th scope="col">Jobs</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="contract in contractsData" :key="contract.id">
+          <th scope="row">{{ contract.id }}</th>
+          <td>
+            <router-link :to="{name: 'Contract', params: {contractId: contract.id, profileId: 4 }}">
+              Contract #{{ contract.id }}
+            </router-link>
+
+          </td>
+          <td class="text-capitalize">{{ contract.status.replaceAll('_', ' ') }}</td>
+          <td>
           <span v-for="job in contract.Jobs" :key="job.id">
             <router-link to="/">{{ job.description }}</router-link>
           </span>
-        </td>
-      </tr>
+          </td>
+        </tr>
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+
+    <br>
+    <p v-if="!unpaidJobs">Loading...</p>
+    <div v-else>
+      <h4>
+         <span class="text-capitalize">
+          {{ profileData.type }}
+        </span> unpaid jobs
+      </h4>
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Description</th>
+          <th scope="col">Price</th>
+          <th scope="col">Contract</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="job in unpaidJobs" :key="job.id">
+          <th scope="row">{{ job.id }}</th>
+          <td>
+            {{ job.description }}
+          </td>
+          <td>US${{ job.price }}</td>
+          <td>#{{ job.ContractId }}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </template>
