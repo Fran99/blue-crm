@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 module.exports = {
 
   /**
-   *
+   * Returns a list of contracts for a given client or contractor
    * @param req
    * @param res
    * @return {Promise<*>}
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   /**
-   *
+   * Returns a single contract for a client or contractor
    * @param req
    * @param res
    * @return {Promise<*>}

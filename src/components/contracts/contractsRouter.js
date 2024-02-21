@@ -6,15 +6,14 @@ const router = express.Router();
 
 /**
  * GET /contracts
- * @returns a list of contracts belonging to a user (client or contractor)
- * the list should only contain non terminated contracts.
+ * Returns a list of contracts belonging to a user (client or contractor).
+ * The list should only contain non terminated contracts.
  */
 router.get('/', getProfile, findAll);
 
 /**
  * GET /contracts/:id
  * Gets all the contracts for a given Client or Contractor
- * @returns contract by id
  */
 router.get('/:id', getProfile, findOne);
 
