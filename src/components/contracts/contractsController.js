@@ -9,9 +9,10 @@ module.exports = {
    * @return {Promise<*>}
    */
   async findAll(req, res) {
-    const { Contract } = req.app.get('models');
+    const { Contract, Job } = req.app.get('models');
     const { id: profileId } = req.profile;
     const contracts = await Contract.findAll({
+      include: [Job],
       where: {
         status: {
           [Op.not]: 'terminated',
