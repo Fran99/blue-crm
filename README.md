@@ -125,7 +125,7 @@ Thank you and good luck! 🙏
 
 ### Run the API and the Front
 ```sh
-npm install && cd hometask-front && npm install
+npm install && cd hometask-front && npm install && cd ..
 npm run seed
 npm start
 ```
