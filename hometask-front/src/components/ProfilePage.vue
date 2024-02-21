@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {type Ref, ref} from 'vue'
+import {computed, type Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
 import {API_URL} from "@/constants";
 
@@ -23,6 +23,10 @@ async function getProfile() {
   const res = await fetch(`${API_URL}/profiles/${profileId}`);
   profileData.value = await res.json();
 }
+
+const isClient = computed(() => {
+  return profileData.value.type === 'client'
+})
 
 async function getContracts() {
   contractsData.value = null;
@@ -60,6 +64,22 @@ async function makeDeposit() {
     isMakingDeposit.value = false;
     depositAmount.value = 0;
   }
+}
+
+async function payJob(jobId) {
+  const response = await fetch(`${API_URL}/jobs/${jobId}/pay`, {
+    method: 'POST',
+    headers: {
+      profile_id: profileId
+    }
+  });
+  if(response.ok) {
+    await Promise.all([
+      getProfile(),
+      getUnpaidJobs()
+    ]);
+  }
+
 }
 
 getProfile();
@@ -100,10 +120,10 @@ getUnpaidJobs();
     <p v-if="!contractsData">Loading...</p>
 
     <div v-else>
-      <h4>
+      <h4 class="display-6">
         <span class="text-capitalize">
           {{ profileData.type }}
-        </span> contracts
+        </span> contracts:
       </h4>
       <table class="table">
         <thead>
@@ -118,17 +138,13 @@ getUnpaidJobs();
         <tr v-for="contract in contractsData" :key="contract.id">
           <th scope="row">{{ contract.id }}</th>
           <td>
-            <router-link :to="{name: 'Contract', params: {contractId: contract.id, profileId: 4 }}">
+            <router-link :to="{name: 'ContractPage', params: {contractId: contract.id, profileId: 4 }}">
               Contract #{{ contract.id }}
             </router-link>
 
           </td>
           <td class="text-capitalize">{{ contract.status.replaceAll('_', ' ') }}</td>
-          <td>
-          <span v-for="job in contract.Jobs" :key="job.id">
-            <router-link to="/">{{ job.description }}</router-link>
-          </span>
-          </td>
+          <td>{{ contract.Jobs.length }}</td>
         </tr>
 
         </tbody>
@@ -137,11 +153,12 @@ getUnpaidJobs();
 
     <br>
     <p v-if="!unpaidJobs">Loading...</p>
+    <h4 class="display-6" v-else-if="unpaidJobs.length === 0">No unpaid jobs</h4>
     <div v-else>
-      <h4>
+      <h4 class="display-6">
          <span class="text-capitalize">
           {{ profileData.type }}
-        </span> unpaid jobs
+        </span> unpaid jobs:
       </h4>
 
       <table class="table">
@@ -151,6 +168,7 @@ getUnpaidJobs();
           <th scope="col">Description</th>
           <th scope="col">Price</th>
           <th scope="col">Contract</th>
+          <th v-if="isClient" scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -161,6 +179,9 @@ getUnpaidJobs();
           </td>
           <td>US${{ job.price }}</td>
           <td>#{{ job.ContractId }}</td>
+          <td v-if="isClient">
+            <button class="btn btn-link" @click="payJob(job.id)" :disabled="profileData.balance < job.price">Pay</button>
+          </td>
         </tr>
 
         </tbody>
@@ -173,5 +194,10 @@ getUnpaidJobs();
 <style scoped>
 h6 a {
   padding-left: 0;
+}
+
+button.btn-link {
+  padding: 0;
+  text-decoration: none;
 }
 </style>
