@@ -1,7 +1,4 @@
-const { Op, Sequelize } = require('sequelize');
-const {
-  Contract, sequelize, Job, Profile,
-} = require('../../model');
+const { sequelize } = require('../../model');
 
 module.exports = {
   async bestProfession(req, res) {
@@ -24,8 +21,24 @@ module.exports = {
     return res.json(result[0][0]);
   },
 
-  async bestClient(req, res) {
-    console.log('Best client');
-    return 1;
+  async bestClients(req, res) {
+    const start = req.query.start || 0;
+    const end = req.query.end || (new Date()).toISOString();
+    const limit = req.query.limit || 2;
+
+    const result = await sequelize.query(
+      `SELECT p.id, firstname || ' ' || lastname AS fullname, SUM(j.price) AS paid
+       FROM Profiles p
+       JOIN Contracts c ON p.id = c.ClientId
+       JOIN Jobs j ON c.id = j.ContractId
+       WHERE j.paid = 1 
+       AND j.paymentDate IS NOT NULL
+       AND j.paymentDate BETWEEN "${start}" AND "${end}"
+       GROUP BY p.id 
+       ORDER BY paid DESC
+       LIMIT ${limit};`,
+    );
+
+    return res.json(result[0]);
   },
 };
