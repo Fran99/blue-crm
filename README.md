@@ -99,7 +99,9 @@ Thank you and good luck! 🙏
 
 
 ---
-# Summary of the Challenge
+# Challenge
+
+## Summary:
 
 - __Implementation of Required Endpoints:__ Develop all necessary endpoints as per the outlined specifications.
 
@@ -118,3 +120,30 @@ Thank you and good luck! 🙏
 - __Introduction of Additional Endpoints for Profile Retrieval:__ Implement two supplementary endpoints dedicated to retrieving profile information.
 
 - __Utilization of Concurrency and Transactions Where Applicable:__ Employ concurrency and transactions judiciously to enhance performance and ensure data integrity where applicable.
+
+## Project Setup:
+
+### Run the API and the Front
+```sh
+npm install && cd hometask-front && npm install
+npm run seed
+npm start
+```
+
+### Run integration tests
+```sh
+npm run test
+```
+
+## Considerations
+If I had more time, there are several things to implement/improve, such as error handling, separation of concerns, perhaps creating services or DALs. Implementation of DTO validation using Joi, for example, since the API is not thoroughly tested against exception cases. I also suggest a more robust authentication system based on JWT. Not only integration tests but also unit tests, and furthermore, mocking the database to avoid hitting it every time the same tests are run.
+
+Regarding the frontend, there are many areas for improvement, such as utilizing a store for state management, component structure, etc.
+
+Beyond that, I believe it turned out to be a good solution for the short period of time. I remain attentive to any doubts or questions that may arise and to any updates regarding your feedback.
+
+
+
+
+
+
