@@ -76,6 +76,7 @@ getContracts();
             <input type="number" min="1" class="form-control" id="amount" placeholder="50" v-model="depositAmount"/>
             <label for="floatingInput">Deposit amount:</label>
             <div id="depositFeedback" class="form-text">{{ depositFeedback }}</div>
+            <br>
             <button class="btn btn-secondary btn-sm" @click.prevent="makeDeposit">Send</button>
           </div>
         </div>
