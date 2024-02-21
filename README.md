@@ -96,3 +96,25 @@ It would be great for example if you'd write some unit test / simple frontend de
 When you have finished the assignment, zip your repo (make sure to include .git folder) and send us the zip.
 
 Thank you and good luck! 🙏
+
+
+---
+# Summary of the Challenge
+
+- __Implementation of Required Endpoints:__ Develop all necessary endpoints as per the outlined specifications.
+
+- __Source Code Refactoring and Component Segregation by Domain:__ Enhance the structure of the source code by segregating components according to their domains, ensuring better organization and maintainability.
+
+- __Integration Testing:__ Introduce integration tests to verify the functionality and interoperability of system components.
+
+- __Creation of a Simplified Yet Functional Frontend with Vue.js:__ Develop a user-friendly frontend interface using Vue.js, focusing on simplicity and utility.
+
+- __Integration of Helmet for Enhanced Security Practices:__ Incorporate Helmet middleware to bolster security measures, adhering to best practices.
+
+- __Implementation of CORS to Facilitate Cross-Domain Communication:__ Enable Cross-Origin Resource Sharing (CORS) to facilitate communication between endpoints hosted on different domains.
+
+- __Integration of ESLint for Code Quality and Style Enforcement:__ Integrate ESLint to identify potential issues and enforce consistent code styling across the codebase.
+
+- __Introduction of Additional Endpoints for Profile Retrieval:__ Implement two supplementary endpoints dedicated to retrieving profile information.
+
+- __Utilization of Concurrency and Transactions Where Applicable:__ Employ concurrency and transactions judiciously to enhance performance and ensure data integrity where applicable.
