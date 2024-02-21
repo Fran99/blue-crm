@@ -16,4 +16,8 @@ a {
   color: #1C4396;
   text-decoration: none!important;
 }
+
+.container-sm {
+  padding-bottom: 100px;
+}
 </style>

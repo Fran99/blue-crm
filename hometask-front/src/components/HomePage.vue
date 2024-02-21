@@ -24,8 +24,8 @@ getBestClients();
 </script>
 
 <template>
-  <div class="container">
 
+  <div class="container-sm">
     <br><br>
     <h1 class="display-1">Hello guest!</h1>
     <br>

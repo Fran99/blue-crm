@@ -4,7 +4,6 @@ import ProfilePage from "@/components/ProfilePage.vue";
 import ProfilesPage from "@/components/ProfilesPage.vue";
 import ContractPage from "@/components/ContractPage.vue";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -25,9 +24,9 @@ const router = createRouter({
     },
     {
       path: '/contracts/:contractId/:profileId',
-      name: 'Contract',
+      name: 'ContractPage',
       component: ContractPage
-    },
+    }
   ]
 })
 

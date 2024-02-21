@@ -3,25 +3,28 @@ const year = (new Date()).getFullYear();
 </script>
 
 <template>
-  <footer>
+  <footer class="align-bottom">
     <div class="container">
-      <p>&copy; {{ year }} HomeTaskFront</p>
+
     </div>
   </footer>
+
+  <nav id="footer" class="navbar fixed-bottom">
+    <div class="container-fluid">
+      <p>&copy; {{ year }} HomeTaskFront</p>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
-footer {
+#footer {
   padding: 10px 0;
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
   background-color: #1c4396;
   color: white;
 }
 
-footer p {
+#footer p {
   margin-bottom: 0;
+  text-align: center;
 }
 </style>
