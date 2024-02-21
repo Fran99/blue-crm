@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import router from "@/router";
+import {computed} from "vue";
+
+const isHomePage = computed(() => {
+  return router.currentRoute.value.name === 'HomePage'
+})
 
 </script>
 
@@ -25,6 +31,13 @@
       </div>
     </div>
   </nav>
+
+  <div class="container" v-if="!isHomePage">
+    <h6 id="go-back">
+      <a href="" @click.prevent="router.back()">Go Back</a>
+    </h6>
+  </div>
+
 </template>
 
 <style scoped>
@@ -36,6 +49,10 @@ nav {
 
 .navbar-brand, .navbar-nav a, .navbar-nav a.active {
   color: white;
+}
+
+#go-back {
+  margin-top: 10px;
 }
 
 </style>
