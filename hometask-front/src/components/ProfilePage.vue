@@ -140,7 +140,7 @@ getUnpaidJobs();
         <tr v-for="contract in contractsData" :key="contract.id">
           <th scope="row">{{ contract.id }}</th>
           <td>
-            <router-link :to="{name: 'ContractPage', params: {contractId: contract.id, profileId: 4 }}">
+            <router-link :to="{name: 'ContractPage', params: {contractId: contract.id, profileId: profileId }}">
               Contract #{{ contract.id }}
             </router-link>
 
