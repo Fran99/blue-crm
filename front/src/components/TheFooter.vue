@@ -11,7 +11,7 @@ const year = (new Date()).getFullYear();
 
   <nav id="footer" class="navbar fixed-bottom">
     <div class="container-sm">
-      <p>&copy; {{ year }} HomeTaskFront</p>
+      <p>&copy; {{ year }} BlueCRM</p>
     </div>
   </nav>
 </template>
