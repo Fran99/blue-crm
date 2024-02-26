@@ -2,7 +2,7 @@
 
 ### Run the API and the Front
 ```sh
-npm install && cd hometask-front && npm install && cd ..
+npm install && cd front && npm install && cd ..
 npm run seed
 npm start
 ```
